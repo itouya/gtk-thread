@@ -1,4 +1,4 @@
-TARGET=test.exe
+TARGET=gtk-thread
 
 CC = gcc
 OBJS = main.o gtask-example-window.o resource.o
@@ -11,11 +11,11 @@ resource.c: gtask-example-gresource.xml gtask-example-window.ui
 .o: .c
 	$(CC) $(CPPFLAGS) -c $<
 
-test.exe: $(OBJS)
+gtk-thread: $(OBJS)
 	$(CC) $(OBJS) -o $@ $(LDLIBS)
 
 .PHONY: all clean
 
-all: test.exe
+all: gtk-ghread
 
-clean: del test.exe
+clean: rm gtk-thread
