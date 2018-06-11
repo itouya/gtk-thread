@@ -1,21 +1,29 @@
-TARGET=gtk-thread
+ifeq ($(OS), WindowsNT)
+TARGET = gtk-thread.exe
+RM = cmd.exe /C del
+else
+TARGET = gtk-thread
+RM = rm -f
+endif
 
 CC = gcc
 OBJS = main.o gtask-example-window.o resource.o
 CPPFLAGS = $(shell pkg-config gtk+-3.0 --cflags)
 LDLIBS = $(shell pkg-config gio-2.0 gtk+-3.0 --libs)
 
-resource.c: gtask-example-gresource.xml gtask-example-window.ui
-	glib-compile-resources --target=$@ --generate-source gtask-example-gresource.xml
-
-.o: .c
+.c.o:
 	$(CC) $(CPPFLAGS) -c $<
 
-gtk-thread: $(OBJS)
+$(TARGET): $(OBJS)
 	$(CC) $(OBJS) -o $@ $(LDLIBS)
+
+resource_files = $(shell glib-compile-resources --generate-dependencies gtask-example-gresource.xml)
+resource.c: gtask-example-gresource.xml $(resource_files)
+	glib-compile-resources --target=$@ --generate-source $<
 
 .PHONY: all clean
 
-all: gtk-ghread
+all: $(TARGET)
 
-clean: rm gtk-thread
+clean:
+	-$(RM) $(TARGET) $(OBJS) reource.c
