@@ -1,6 +1,6 @@
-ifeq ($(OS), WindowsNT)
+ifeq ($(OS), Windows_NT)
 TARGET = gtk-thread.exe
-RM = cmd.exe /C del
+RM = cmd.exe //C del
 else
 TARGET = gtk-thread
 RM = rm -f
@@ -26,4 +26,4 @@ resource.c: gtask-example-gresource.xml $(resource_files)
 all: $(TARGET)
 
 clean:
-	-$(RM) $(TARGET) $(OBJS) reource.c
+	$(RM) $(TARGET) $(OBJS) reource.c
